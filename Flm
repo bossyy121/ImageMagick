@@ -1,0 +1,23 @@
+from moviepy.editor import TextClip, concatenate_videoclips, fadein, fadeout
+
+frames = [
+("00:00","Kalender digital glitch; angka tergerus.","Enam tahun? Delapan?… Apa gunanya?"),
+# …(masukkan 18 tuple seperti di PDF)…
+("00:58","Close-up mata & api; fade.","Aku… akhirnya… ditemukan.")
+]
+
+clips=[]
+dur=60/18  # ≈3.3 detik per frame
+for tc,vis,vo in frames:
+    txt=f"{tc}\n{vis}\n\n{vo}"
+    clip=(TextClip(txt,font='Helvetica',fontsize=48,
+                   size=(1920,1080),color='white',
+                   bg_color='black',method='caption',
+                   align='West')
+           .set_duration(dur)
+           .fx(fadein,0.2)
+           .fx(fadeout,0.2))
+    clips.append(clip)
+
+video=concatenate_videoclips(clips,method="compose")
+video.write_videofile("animatic.mp4",fps=24,codec="libx264",audio=False)
